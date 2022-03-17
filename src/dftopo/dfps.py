@@ -11,8 +11,8 @@ def connection(dbname,user,password,host,port,schema):
 def read(query, engine):
  return pd.read_sql(query, engine)
 
-def load(df,table_name, engine):
-    return df.to_sql(table_name, con=engine, if_exists='append')
+def load(df,table_name, engine, schema):
+    return df.to_sql(table_name, con=engine, if_exists='append', schema=schema)
 
 def query_execution(query, engine):
     with engine.connect() as con:
