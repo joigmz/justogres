@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: df-to-postgres-joigmz
+Version: 0.0.3
+Summary: Pass postgres data to pandas dataframe
+Home-page: https://github.com/pypa/sampleproject
+Author: Jose Izam
+Author-email: jose.izam99@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/joigmz/dataframe_to_postgres
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Example Package
+
+Pass postgres data to pandas dataframe
+
+

@@ -1,0 +1,9 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+src/df_to_postgres.egg-info/PKG-INFO
+src/df_to_postgres.egg-info/SOURCES.txt
+src/df_to_postgres.egg-info/dependency_links.txt
+src/df_to_postgres.egg-info/requires.txt
+src/df_to_postgres.egg-info/top_level.txt
