@@ -1,5 +1,15 @@
 # DFTOPO
 
+### How to Install
+```
+pip install dftopo
+```
+
+### Import into your code
+```
+from dftopo import dfps
+```
+
 ## Examples
 ### Connection.
 ```
