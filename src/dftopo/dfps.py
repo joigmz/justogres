@@ -12,7 +12,7 @@ def read(query, engine):
  return pd.read_sql(query, engine)
 
 def load(df,table_name, engine, schema):
-    return df.to_sql(table_name, con=engine, if_exists='append', schema=schema)
+    return df.to_sql(table_name, con=engine, if_exists='append', schema=schema, index=False)
 
 def query_execution(query, engine):
     with engine.connect() as con:
