@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: dftopo
-Version: 1.0.0
+Version: 1.0.1
 Summary: Pass postgres data to pandas dataframe
 Home-page: https://github.com/joigmz/dataframe_to_postgres
 Author: Jose Izam
@@ -15,8 +15,10 @@ Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE
 
-# Example Package
+# DFTOPO
 
 Pass postgres data to pandas dataframe
+Read data from postgres in python
+Load data from python to Postgres
 
 
