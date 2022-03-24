@@ -1,47 +1,54 @@
-# DFTOPO
-
-### How to Install
+# Usage
+## 1. Create client object
 ```
-pip install dftopo
+psql = clientPsql(
+        host = <your host>,
+        user = <your user>,
+        password = <your password>,
+        port=<your port (optional)>,
+        db_name=<your database name>,
+    )
 ```
-
-### Import into your code
+## 2. select read or insert method
+### 2.1 read() -> return pandas.DataFrame object
 ```
-from dftopo import dfps
-```
-
-## Examples
-### Connection.
-```
-dbname='your_dbname'
-user='your_user'
-password='your_password'
-host='your_host'
-port='your_port'
-schema='your_schema1,your_schema2'
-
-engine = dfps.connection(dbname,user,password,host,port,schema)
+df = psql.read(<your sql query>,<chunksize (optional)>)
 ```
 
-### Pure SQL. 
+### 2.2 insert() -> return None
 ```
-query = f"""
-    SELECT * FROM your_schema1.your_table
-    """
+psql.insert(
+    <your pd.DataFrame object>,
+    table_name=<your table name>, #if doesn't exist, will be created
+    schema=<your schema name>, #should be created previously
+    chunksize=<your chunksize to load (default: 1000)>)
+```
 
-list(dfps.query_execution(query, engine))
+## Examples:
+### init client
+```
+psql = clientPsql(
+        host = os.environ.get("host_justo_pg"),
+        user = os.environ.get("username_justo_pg"),
+        password = os.environ.get("password_justo_pg"),
+        port=os.environ.get("port_justo_pg"),
+        db_name='postgres',
+    )
+```
+### if we are gonna read
+```
+q="""SELECT * 
+FROM schema_name.table_name;
+"""
+df = psql.read(query=q)
 ```
 
-### Read data from postgres in python. 
+### if we are gonna insert
 ```
-query = f"""
-    SELECT * FROM your_schema2.your_table
-    """
-
-df = dfps.read(query, engine)
-```
-### Load data from python to Postgres. 
-```
-dfps.load(df,"test2", engine,'your_schema1')
-dfps.load(df,"test2", engine,'your_schema2')
+df = pd.read_csv('example.csv')
+psql.insert(
+    df,
+    table_name='test_table',
+    schema='test_schema',
+    )
 ```
