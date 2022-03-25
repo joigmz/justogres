@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: justogres
-Version: 2.0.1
+Version: 2.0.3
 Summary: Pass postgres data to pandas dataframe
 Home-page: https://github.com/justo-bi/justogres
 Author: Jose Izam, Daniel Taiba
