@@ -4,6 +4,10 @@ pip install justogres
 ```
 
 # Usage
+## 0. import 
+```
+from justogres import clientPsql
+```
 ## 1. Create client object
 ```
 psql = clientPsql(
@@ -35,6 +39,8 @@ psql.insert(
 # Examples:
 ### first we must init client
 ```
+from justogres import clientPsql
+
 psql = clientPsql(
         host = os.environ.get("host_justo_pg"),
         user = os.environ.get("username_justo_pg"),
