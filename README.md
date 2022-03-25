@@ -1,3 +1,8 @@
+# Install
+```
+pip install justogres
+```
+
 # Usage
 ## 1. Create client object
 ```
@@ -9,11 +14,14 @@ psql = clientPsql(
         db_name=<your database name>,
     )
 ```
-## 2. select read or insert method
-### 2.1 read() -> return pandas.DataFrame object
+## 2. execute query or insert method
+### 2.1 exec_query()
 ```
-df = psql.read(<your sql query>,<chunksize (optional)>)
+psql.exec_query(
+    <your sql query>,
+    chunksize = <chunksize (optional)>)
 ```
+#### if query return something, method return pandas.Dataframe object
 
 ### 2.2 insert() -> return None
 ```
@@ -24,8 +32,8 @@ psql.insert(
     chunksize=<your chunksize to load (default: 1000)>)
 ```
 
-## Examples:
-### init client
+# Examples:
+### first we must init client
 ```
 psql = clientPsql(
         host = os.environ.get("host_justo_pg"),
@@ -35,15 +43,22 @@ psql = clientPsql(
         db_name='postgres',
     )
 ```
-### if we are gonna read
+### Then follow this options:
+#### 1.if we are gona execute query
+```
+q="""DELETE 
+    FROM schema_name.table_name 
+    WHERE column_name='value';"""
+psql.exec_query(q)
+```
+#### 1.1 (special case) if we are gonna read
 ```
 q="""SELECT * 
-FROM schema_name.table_name;
-"""
-df = psql.read(query=q)
+    FROM schema_name.table_name;"""
+df = psql.read(q)
 ```
 
-### if we are gonna insert
+#### 2. if we are gonna insert
 ```
 df = pd.read_csv('example.csv')
 psql.insert(

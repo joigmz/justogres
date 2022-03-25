@@ -4,7 +4,6 @@ from psycopg2.extras import execute_values
 from psycopg2.extensions import register_adapter,AsIs
 import numpy as np
 import pandas as pd
-#from metrics import profile
 
 class clientPsql():
     def __init__(
@@ -26,13 +25,13 @@ class clientPsql():
         register_adapter(np.int64,AsIs)
         register_adapter(np.bool_,AsIs)
 
-    #@profile
-    def read(
+    def exec_query(
         self,
         query,
         chunksize=1000
         ):
-
+        column_name = None
+        response = None
         try:
             conn = psycopg2.connect(
                 host=self.__host,
@@ -43,16 +42,19 @@ class clientPsql():
             with conn.cursor() as cur:
                 cur.itersize = chunksize
                 cur.execute(query)
-                column_name = [desc[0] for desc in cur.description]
-                response = cur.fetchall()
+                if cur.description:
+                    column_name = [desc[0] for desc in cur.description]
+                    response = cur.fetchall()
+                conn.commit()
+
+
         except (Exception, psycopg2.DatabaseError) as e:
-            print ('Error reading...',e)
-            column_name = None
-            response = None
+            print ('Error executing query: ',e)
+            conn = None
         finally:
-            
             if conn is not None:
                 conn.close()
+            if column_name is not None:
                 return pd.DataFrame(np.array(response),columns=column_name)
     
     def create_staging_table(
@@ -67,7 +69,6 @@ class clientPsql():
         ({','.join(map_column_types(data_types))});"""
         cursor.execute(query)
     
-    #@profile
     def insert (
         self,
         df, 
@@ -105,7 +106,7 @@ class clientPsql():
                         (values for values in df.values.tolist()),
                         page_size=chunksize
                         )
-            conn.commit()
+                conn.commit()
 
         except (Exception, psycopg2.DatabaseError) as e:
             print ('Error while insert...',e)
@@ -133,6 +134,4 @@ def map_column_types(data_types: dict):
     return [f'{key}  {map_type(value)}' for key,value in data_types.items() if key!='Unnamed: 0']
 
 if __name__=='__main__':    
-    
-    
     pass
