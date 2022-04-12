@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: justogres
-Version: 3.0.0
+Version: 3.0.1
 Summary: Pass postgres data to pandas dataframe
 Home-page: https://github.com/justo-bi/justogres
 Author: Jose Izam, Daniel Taiba
@@ -21,6 +21,10 @@ pip install justogres
 ```
 
 # Usage
+## 0. import 
+```
+from justogres import clientPsql
+```
 ## 1. Create client object
 ```
 psql = clientPsql(
@@ -52,6 +56,8 @@ psql.insert(
 # Examples:
 ### first we must init client
 ```
+from justogres import clientPsql
+
 psql = clientPsql(
         host = os.environ.get("host_justo_pg"),
         user = os.environ.get("username_justo_pg"),
@@ -74,6 +80,12 @@ q="""SELECT *
     FROM schema_name.table_name;"""
 df = psql.read(q)
 ```
+optional: read with pandas library
+```
+q="""SELECT * 
+    FROM schema_name.table_name;"""
+df = psql.read_with_pandas(q)
+```
 
 #### 2. if we are gonna insert
 ```
@@ -84,4 +96,5 @@ psql.insert(
     schema='test_schema',
     )
 ```
+
 
