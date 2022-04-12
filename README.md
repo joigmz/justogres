@@ -33,7 +33,9 @@ psql.insert(
     <your pd.DataFrame object>,
     table_name=<your table name>, #if doesn't exist, will be created
     schema=<your schema name>, #should be created previously
-    chunksize=<your chunksize to load (default: 1000)>)
+    chunksize=<your chunksize to load (default: 1000)>,
+    column_types={<name_col_1>:<postgres_data_type_col_1, #optional
+                  <name_col_2>:<postgres_data_type_col_2,...})
 ```
 
 # Examples:
