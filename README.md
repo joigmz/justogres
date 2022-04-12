@@ -63,6 +63,12 @@ q="""SELECT *
     FROM schema_name.table_name;"""
 df = psql.read(q)
 ```
+optional: read with pandas library
+```
+q="""SELECT * 
+    FROM schema_name.table_name;"""
+df = psql.read_with_pandas(q)
+```
 
 #### 2. if we are gonna insert
 ```

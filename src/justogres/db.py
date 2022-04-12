@@ -1,9 +1,9 @@
-import os
 import psycopg2
 from psycopg2.extras import execute_values
 from psycopg2.extensions import register_adapter,AsIs
 import numpy as np
 import pandas as pd
+from .utils import map_column_types
 
 class clientPsql():
     def __init__(
@@ -55,18 +55,22 @@ class clientPsql():
             if conn is not None:
                 conn.close()
             if column_name is not None:
-                return pd.DataFrame(np.array(response),columns=column_name)
+                try:
+                    return pd.DataFrame(np.array(response),columns=column_name)
+                except: 
+                    return pd.DataFrame(columns=column_name)
     
     def create_staging_table(
         self,
         cursor,
         table_name:str, 
         schema:str='public',
-        data_types=dict
+        data_types=dict,
+        column_types = {}
         ) -> None:
 
         query = f"""CREATE UNLOGGED TABLE IF NOT EXISTS {schema}.{table_name}
-        ({','.join(map_column_types(data_types))});"""
+        ({','.join(map_column_types(data_types,column_types))});"""
         cursor.execute(query)
     
     def insert (
@@ -74,7 +78,8 @@ class clientPsql():
         df, 
         table_name:str, 
         schema:str='public', 
-        chunksize:int = 1000
+        chunksize:int = 1000,
+        column_types = {}
         )->None:
 
         try:
@@ -89,7 +94,8 @@ class clientPsql():
                     cur,
                     table_name=table_name,
                     schema=schema,
-                    data_types=df.dtypes.to_dict()
+                    data_types=df.dtypes.to_dict(),
+                    column_types=column_types
                     )
                 
                 if 'Unnamed: 0' in df.columns.tolist():
@@ -116,22 +122,17 @@ class clientPsql():
             if conn is not None:
                 conn.close()
 
-def map_type(var):
-    numpy_to_psql = {
-        'int64' :'INT',
-        'object':'TEXT',
-        'float64':'NUMERIC',
-        'bool': 'BOOLEAN',
-        'datetime64[ns]':'TIMESTAMP',
-        'timedelta[ns]':'NUMERIC',
-        }
-    if var.name in numpy_to_psql.keys():
-        return numpy_to_psql[var.name]
-    else:
-        return 'TEXT'
+    ############## PANDAS METHODS #####################
+    def get_engine(self):
+        return psycopg2.connect(
+                host=self.__host,
+                user=self.__user,
+                password=self.__password,
+                database=self.database,
+                )
 
-def map_column_types(data_types: dict):
-    return [f'{key}  {map_type(value)}' for key,value in data_types.items() if key!='Unnamed: 0']
+    def read_with_pandas(self,query,**kwargs):
+        return pd.read_sql(query,self.get_engine(),**kwargs)
 
 if __name__=='__main__':    
     pass

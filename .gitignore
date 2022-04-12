@@ -1,2 +1,4 @@
 .pypirc
 .DS_Store
+src/test*
+__pycache__
