@@ -2,7 +2,8 @@
 here is a detailed description of the functions included in the module, to see details about the updates review [releases](releases.md)
 
 
-# clientPsql (host:str, user:str, password:str, port:str='5432', db_name:str = 'postgres')
+# Init Module
+## clientPsql (host:str, user:str, password:str, port:str='5432', db_name:str = 'postgres')
 init class object, parameters:
 - host: **string** with IP address or DNS
 - user: **string** with user name which have access
@@ -12,6 +13,7 @@ init class object, parameters:
 
 return None
 
+# Methods of module
 ## 1. clientPsql(...).exec_query( query, chunksize=1000)
 function that allows executing SQL queries
 
