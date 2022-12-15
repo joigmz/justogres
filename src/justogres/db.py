@@ -24,7 +24,7 @@ class clientPsql():
         #register adapters
         register_adapter(np.int64,AsIs)
         register_adapter(np.bool_,AsIs)
-        register_adapter(pd._libs.missing.NAType, lambda i: AsIs('NULL'))
+        register_adapter(pd.NaT,AsIs('NULL'))
 
 
     def exec_query(
