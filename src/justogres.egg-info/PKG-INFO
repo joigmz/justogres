@@ -1,13 +1,11 @@
 Metadata-Version: 2.1
 Name: justogres
-Version: 3.0.1
+Version: 3.0.2
 Summary: Pass postgres data to pandas dataframe
 Home-page: https://github.com/justo-bi/justogres
 Author: Jose Izam, Daniel Taiba
 Author-email: jose.izam99@gmail.com, danielt.dtr@gmail.com
-License: UNKNOWN
 Project-URL: Bug Tracker, https://github.com/justo-bi/justogres
-Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
@@ -15,86 +13,86 @@ Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE
 
-# Install
+# Overview
+Justogres is a connector to comunicate pandas.DataFrame objects with postgres database
+
+# Quick start
+for more details review [documentation](./docs/)
+
+## Install or upgrade package
+install:
 ```
 pip install justogres
 ```
-
-# Usage
-## 0. import 
+upgrade:
+```
+pip install justogres --upgrade
+```
+## Init module
 ```
 from justogres import clientPsql
-```
-## 1. Create client object
-```
-psql = clientPsql(
-        host = <your host>,
-        user = <your user>,
-        password = <your password>,
-        port=<your port (optional)>,
-        db_name=<your database name>,
-    )
-```
-## 2. execute query or insert method
-### 2.1 exec_query()
-```
-psql.exec_query(
-    <your sql query>,
-    chunksize = <chunksize (optional)>)
-```
-#### if query return something, method return pandas.Dataframe object
 
-### 2.2 insert() -> return None
+psql = clientPsql(
+        host = "<your host>",
+        user = "<your user>",
+        password = "<your password>",
+        db_name = "<your database name>",
+    )
+``` 
+## Insert data into postgres
 ```
+import pandas as pd
+example_df = pd.DataFrame(data=example_data)
+
 psql.insert(
-    <your pd.DataFrame object>,
-    table_name=<your table name>, #if doesn't exist, will be created
+    example_df,
+    table_name=<your table name>, #if doesn't exist table, will be created
     schema=<your schema name>, #should be created previously
-    chunksize=<your chunksize to load (default: 1000)>)
+    
+    #optional
+    chunksize=<your chunksize to load (default: 1000)>,
+    column_types={<name_column_df>:<data_type postgres>})# if not declare column types, will be assigned automatically
 ```
 
-# Examples:
-### first we must init client
+## Read table of postgres
+we have 2 ways to read DB, both return pandas.DataFrame object but its main difference is the type of data that is assigned to the columns of the dataframe
+### 1. use exec_query() -> all columns are defines as object (string datatype in pandas)
 ```
-from justogres import clientPsql
+query_example_to_read="""SELECT * 
+    FROM schema_name.table_name;"""
 
-psql = clientPsql(
-        host = os.environ.get("host_justo_pg"),
-        user = os.environ.get("username_justo_pg"),
-        password = os.environ.get("password_justo_pg"),
-        port=os.environ.get("port_justo_pg"),
-        db_name='postgres',
+df = psql.exec_query(
+    query_example_to_read,
+
+    #optional
+    chunksize=<your chunksize to load (default: 1000)>
     )
 ```
-### Then follow this options:
-#### 1.if we are gona execute query
+
+### 2. use read_with_pandas() -> columns are defined with datatype declare for each column into DB
 ```
-q="""DELETE 
+query_example_to_read="""SELECT * 
+    FROM schema_name.table_name;"""
+
+df = psql.read_with_pandas(
+    query_example_to_read,
+
+    #optional
+    **kwargs=<all attributes we can use with pandas.read_sql()>
+    )
+```
+for more info of [pandas.read_sql()](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+
+## Execute sql queries
+this method doesn't return anything
+```
+query_example="""DELETE 
     FROM schema_name.table_name 
     WHERE column_name='value';"""
-psql.exec_query(q)
-```
-#### 1.1 (special case) if we are gonna read
-```
-q="""SELECT * 
-    FROM schema_name.table_name;"""
-df = psql.read(q)
-```
-optional: read with pandas library
-```
-q="""SELECT * 
-    FROM schema_name.table_name;"""
-df = psql.read_with_pandas(q)
-```
 
-#### 2. if we are gonna insert
-```
-df = pd.read_csv('example.csv')
-psql.insert(
-    df,
-    table_name='test_table',
-    schema='test_schema',
+psql.exec_query(
+    query_example,
+    #optional
+    chunksize=<your chunksize to load (default: 1000)>
     )
 ```
-
-
