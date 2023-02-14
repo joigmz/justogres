@@ -71,7 +71,7 @@ class clientPsql():
         column_types = {}
         ) -> None:
 
-        query = f"""CREATE UNLOGGED TABLE IF NOT EXISTS {schema}.{table_name}
+        query = f"""CREATE TABLE IF NOT EXISTS {schema}.{table_name}
         ({','.join(map_column_types(data_types,column_types))});"""
         cursor.execute(query)
     
