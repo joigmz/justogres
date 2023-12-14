@@ -81,3 +81,30 @@ psql.exec_query(
     chunksize=<your chunksize to load (default: 1000)>
     )
 ```
+
+
+# SpreadSheets Module
+
+## Write DataFrame in Worksheet
+
+```python
+from justogres import SpreadSheets
+
+spread_sheet_client = SpreadSheets("credentials.json")
+spreadsheet_id = '1SVZDYBw17S1XeRNBW08YA7i29mOfFlGmmF6EWKH84bk'
+worksheet_name = 'Result'
+
+spread_sheet_client.append_dataframe(data_frame ,spreadsheet_id, worksheet_name)
+```
+
+## Read DataFrame in Worksheet
+
+```python
+from justogres import SpreadSheets
+
+spread_sheet_client = SpreadSheets("credentials.json")
+spreadsheet_id = '1SVZDYBw17S1XeRNBW08YA7i29mOfFlGmmF6EWKH84bk'
+worksheet_name = 'Result'
+
+spread_sheet_client.worksheet_to_dataframe(spreadsheet_id, worksheet_name)
+```
