@@ -2,3 +2,5 @@
 .DS_Store
 src/test*
 __pycache__
+env
+requirements.txt

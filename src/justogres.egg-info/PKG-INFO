@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
 Name: justogres
-Version: 3.0.3
-Summary: Pass postgres data to pandas dataframe
+Version: 3.0.7
+Summary: This library is used to read or write data in Postgres or Google Sheets
 Home-page: https://github.com/justo-bi/justogres
 Author: Jose Izam, Daniel Taiba
 Author-email: jose.izam99@gmail.com, danielt.dtr@gmail.com
@@ -12,6 +12,12 @@ Classifier: Operating System :: OS Independent
 Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: psycopg2-binary
+Requires-Dist: sqlalchemy
+Requires-Dist: google-api-python-client
+Requires-Dist: google-auth
 
 # Overview
 Justogres is a connector to comunicate pandas.DataFrame objects with postgres database
