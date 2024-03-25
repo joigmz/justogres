@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: justogres
-Version: 3.0.8
+Version: 3.0.9
 Summary: This library is used to read or write data in Postgres, MongoDB (Only read) or Google Sheets
 Home-page: https://github.com/justo-bi/justogres
 Author: Jose Izam, Daniel Taiba
