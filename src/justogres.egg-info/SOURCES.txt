@@ -4,6 +4,7 @@ pyproject.toml
 setup.cfg
 src/dftopo/__init__.py
 src/dftopo/dfps.py
+src/justogres/Mongo.py
 src/justogres/__init__.py
 src/justogres/db.py
 src/justogres/spreadsheets.py
